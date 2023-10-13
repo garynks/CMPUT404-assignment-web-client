@@ -111,6 +111,9 @@ class HTTPClient(object):
                 buffer.extend(part)
             else:
                 done = not part
+        # switched utf-8 to latin-1 because some websites
+        # return a termination byte that doesn't decode properly in utf-8
+        # e.g www.google.com
         return buffer.decode('latin-1')
 
     def GET(self, url, args=None):
@@ -124,11 +127,10 @@ class HTTPClient(object):
         response = self.recvall(self.socket)
         self.socket.close()
 
+        print(response)
+
         response_code = self.get_code(response)
         response_body = self.get_body(response)
-
-        print(response_code)
-        print(response_body)
 
         # If a 3xx response code is returned, redirect to the new location
         if 300 <= response_code < 400:
@@ -146,8 +148,9 @@ class HTTPClient(object):
         request = self.build_request("POST", host, path, args)
         self.sendall(request)
         response = self.recvall(self.socket)
-        print(response)
         self.socket.close()
+
+        print(response)
 
         response_code = self.get_code(response)
         response_body = self.get_body(response)

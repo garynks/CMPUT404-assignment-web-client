@@ -7,6 +7,19 @@ See requirements.org (plain-text) for a description of the project.
 
 Make a simple web-client like curl or wget
 
+## Docker Instructions
+Run the following commands in the root
+```bash
+docker build -t web-client-tests .
+docker run --name test -d -it  web-client-tests
+docker exec -it test bash
+```
+
+In the docker container,
+```bash
+python3 freetests.py
+```
+
 Contributors / Licensing
 ========================
 
